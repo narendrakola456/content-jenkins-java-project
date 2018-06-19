@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+  agent {
+    label 'master'
+  }
 
 
   stages {
@@ -22,6 +24,13 @@ pipeline {
           archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
         }
       }
+    }
+
+    stage('deploy') {
+      steps {
+        sh "cp dist/rectange_${env.BUILD_NUMBER}.jar /var/www/html/rectangle/all/"
+      }
+
     }
 
 
