@@ -28,7 +28,7 @@ pipeline {
 
     stage('deploy') {
       steps {
-        sh "cp dist/rectange_${env.BUILD_NUMBER}.jar /var/www/html/rectangle/all/"
+        sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangle/all/"
       }
 
     }
