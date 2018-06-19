@@ -1,14 +1,9 @@
 pipeline {
 
-  agent none
+  agent any
 
   stages {
-
-
     stage('Unit Tests') {
-      agent {
-        label 'master'
-      }
 
       steps {
         sh 'ant -f test.xml -v'
@@ -16,44 +11,17 @@ pipeline {
       }
     }
     stage('build') {
-      agent {
-        label 'master'
-      }
 
       steps {
         sh 'ant -f build.xml -v'
       }
-      post {
-        success {
-          archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
-        }
-      }
-
     }
+  }
 
-    stage('deploy') {
-      agent {
-        label 'master'
-      }
-
-      steps {
-        sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangle/all/"
-      }
-
+  post {
+    success {
+      archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
     }
-
-    stage('deploy on slave-FT') {
-      agent {
-        label 'slave1'
-      }
-
-      steps {
-        sh "wget http://ec2-34-205-127-163.compute-1.amazonaws.com/rectangle/all/rectangle_${env.BUILD_NUMBER}.jar"
-        sh "java -jar rectangle_${env.BUILD_NUMBER}.jar 5 6"
-      }
-    }
-
-
   }
 
 }
