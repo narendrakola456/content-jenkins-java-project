@@ -45,7 +45,7 @@ pipeline {
 
     stage('deploy on slave-FT') {
       agent {
-        label 'slave1'
+        label 'master'
       }
 
       steps {
